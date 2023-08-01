@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Optional;
 
 // Listar todas as pessoas
 // Listar as 10 primeiras pessoas
@@ -36,6 +37,32 @@ public class Main {
                 .map(p -> p.getNome().toUpperCase() + ", " + p.getIdade() + ", " + p.getPais())
                 .forEach(System.out::println);
 
+        // Listar as pessoas que são do Brasil, em ordem de nome
+        System.out.println("\nPessoas do Brasil em ordem por nome");
+        pessoas.stream()
+                .filter(p -> p.getPais().equals("Brazil"))
+                .map(p -> p.getNome() + ", " + p.getPais()).sorted()
+                .forEach(System.out::println);
+
+        // Listar as pessoas que são do Brasil, em ordem de idade
+        System.out.println("\nPessoas do Brasil em ordem de idade");
+        pessoas.stream()
+                .filter(p -> p.getPais().equals("Brazil"))
+                .map(p -> p.getIdade() + ", " + p.getNome() + ", " + p.getPais()).sorted()
+                .forEach(System.out::println);
+
+        // Contar quantas pessoas tem mais de 45 anos
+        System.out.println("\nPessoas acima de 45 anos");
+        System.out.println(pessoas.stream()
+                .filter(p ->p.getIdade() > 45)
+                .map(p -> p.getIdade())
+                .count() + ", pessoas.");
+
+        // Calcular a média de idade das pessoas
+        System.out.println("\nMédia de idade das pessoas");
+        double reduce = pessoas.stream()
+                        .mapToInt(m -> m.getIdade()).average().getAsDouble();
+                        System.out.println(reduce);
     }
 
 }
