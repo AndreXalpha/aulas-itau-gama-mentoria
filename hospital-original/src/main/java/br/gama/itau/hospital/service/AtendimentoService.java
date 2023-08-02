@@ -1,6 +1,7 @@
 package br.gama.itau.hospital.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,4 +51,12 @@ public class AtendimentoService {
         }
         return false;
     }
+
+    public List<AtendimentoDTO> getByPaciente(long idPaciente) {
+        List<Atendimento> atendimentos = repo.findByPaciente(new Paciente(idPaciente));
+        if(atendimentos.size() > 0) {
+            return atendimentos.stream().map(AtendimentoDTO::new).toList();
+        }
+    return new ArrayList<>(null);
+}
 }
