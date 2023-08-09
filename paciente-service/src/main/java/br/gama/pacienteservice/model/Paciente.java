@@ -36,7 +36,7 @@ public class Paciente {
     @Column(length = 15)
     private String telefone;
 
-    @Transient // dado "calculado", não é gravado no banco de dados
+    @Transient // dado "calculado", não e persistido no Banco de Dados
     private List<AtendimentoDTO> atendimentos;
 
     public Paciente(PacienteDTO pacienteDTO) {

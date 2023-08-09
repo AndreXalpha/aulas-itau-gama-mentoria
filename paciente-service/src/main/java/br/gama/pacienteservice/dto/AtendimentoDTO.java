@@ -19,5 +19,4 @@ public class AtendimentoDTO {
     private String medicamentos;
     private boolean fechado;
 
-
 }

@@ -1,4 +1,4 @@
-package br.gama.itau.hospital.service;
+package br.gama.atendimentoservice.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,11 +7,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import br.gama.itau.hospital.dto.AtendimentoDTO;
-import br.gama.itau.hospital.dto.NovoAtendimentoDTO;
-import br.gama.itau.hospital.model.Atendimento;
-import br.gama.itau.hospital.model.Paciente;
-import br.gama.itau.hospital.repo.AtendimentoRepo;
+import br.gama.atendimentoservice.dto.AtendimentoDTO;
+import br.gama.atendimentoservice.dto.NovoAtendimentoDTO;
+import br.gama.atendimentoservice.model.Atendimento;
+import br.gama.atendimentoservice.repo.AtendimentoRepo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -34,7 +34,7 @@ public class AtendimentoService {
 
     public AtendimentoDTO create(NovoAtendimentoDTO novoAtendimentoDTO) {
         Atendimento atendimento = new Atendimento();
-        atendimento.setPaciente(new Paciente(novoAtendimentoDTO.getIdPaciente()));
+        atendimento.setIdPaciente(novoAtendimentoDTO.getIdPaciente());
         atendimento.setData(LocalDate.now());
         atendimento.setExames(novoAtendimentoDTO.getExames());
 
@@ -53,11 +53,16 @@ public class AtendimentoService {
     }
 
     public List<AtendimentoDTO> getByPaciente(long idPaciente) {
-        List<Atendimento> atendimentos = repo.findByPaciente(new Paciente(idPaciente));
+        List<Atendimento> atendimentos = repo.findByIdPaciente(idPaciente);
 
         if(atendimentos.size() > 0) {
             return atendimentos.stream().map(AtendimentoDTO::new).toList();
         }
         return new ArrayList<>();
+    }
+
+    @Transactional
+    public void deleteByPaciente(long idPaciente) {
+        repo.deleteByIdPaciente(idPaciente);
     }
 }
