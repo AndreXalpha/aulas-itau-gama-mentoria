@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,9 @@ import br.gama.atendimentoservice.service.AtendimentoService;
 @RestController
 @RequestMapping("/atendimento")
 public class AtendimentoController {
+
+    @Autowired
+    private KafkaTemplate<String, String> templateString;
 
     @Autowired
     private AtendimentoService service;
@@ -44,6 +48,7 @@ public class AtendimentoController {
     @PostMapping("/{id}")
     public ResponseEntity<Void> close(@PathVariable long id, @RequestBody MedicamentosDTO medicamentos) {
         if (service.close(id, medicamentos.getMedicamentos())) {
+            templateString.send("farmacia", medicamentos.getMedicamentos());
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
