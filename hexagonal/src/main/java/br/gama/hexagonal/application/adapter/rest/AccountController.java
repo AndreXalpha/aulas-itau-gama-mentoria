@@ -31,4 +31,9 @@ public class AccountController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @PostMapping("/transferencia/{idAccountIn}/{idAcconuntOut}/{value}")
+    public ResponseEntity<void> deposit()
+
+    
 }
